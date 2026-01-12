@@ -56,4 +56,4 @@ Simply replace `"openai/gpt-oss-120b"` with the model ID of your choice from the
 
 ## Paid Models
 
-If your clinic project requires access to a paid model, contact Clinic administration and they will create an API key with limited credits for you.
+If your clinic project requires access to a paid model, contact Clinic administration to explain your use case. If the use case is appropriate and funds are available, they will create an API key with limited credits for you.
