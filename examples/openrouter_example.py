@@ -1,17 +1,22 @@
-"""Example of using OpenRouter API with OpenAI SDK."""
+"""Example of using OpenRouter API with LiteLLM."""
 
 import os
+import warnings
 
-from openai import OpenAI
+from litellm import completion
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ.get("OPENROUTER_API_KEY"),
+# Suppress Pydantic serialization warnings from LiteLLM
+warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
+
+# Set environment variables
+os.environ["OPENROUTER_API_KEY"] = os.getenv("OPENROUTER_API_KEY")
+os.environ["OPENROUTER_API_BASE"] = os.getenv(
+    "OPENROUTER_API_BASE", "https://openrouter.ai/api/v1"
 )
 
-completion = client.chat.completions.create(
-    model="openai/gpt-oss-120b",
+response = completion(
+    model="openrouter/openai/gpt-oss-120b",
     messages=[{"role": "user", "content": "What is up?"}],
 )
 
-print(completion.choices[0].message.content)
+print(response)
