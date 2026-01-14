@@ -2,6 +2,10 @@
 
 Instructions to get students up and running with OpenRouter in the Data Science Clinic.
 
+## Overview
+
+We use the [LiteLLM](https://github.com/BerriAI/litellm) package to access models through [OpenRouter](https://openrouter.ai). OpenRouter allows users to choose from many different LLM models from various providers (OpenAI, Anthropic, Google, Meta, and more) through a single unified API.
+
 ## Setup
 
 ### 1. Create an OpenRouter Account and API Key
@@ -19,40 +23,59 @@ OPENROUTER_API_KEY=your-api-key-here
 
 **Important:** Do NOT commit your `.env` file! It contains your private API key.
 
-### 3. Add OpenAI Dependency
+### 3. Add LiteLLM Dependency
 
-Add `openai` to your `pyproject.toml` dependencies:
+Add `litellm` to your `pyproject.toml` dependencies:
 
 ```toml
 dependencies = [
-    "openai",
+    "litellm",
 ]
 ```
 
-## Code Example
+## Code Examples
+
+### Chat Completion
 
 ```python
 import os
-from openai import OpenAI
+from litellm import completion
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ.get("OPENROUTER_API_KEY"),
-)
+# Set environment variables
+os.environ["OPENROUTER_API_KEY"] = os.getenv("OPENROUTER_API_KEY")
+os.environ["OPENROUTER_API_BASE"] = os.getenv("OPENROUTER_API_BASE", "https://openrouter.ai/api/v1")
 
-completion = client.chat.completions.create(
-    model="openai/gpt-oss-120b",  # Change this to any model from OpenRouter
+response = completion(
+    model="openrouter/openai/gpt-oss-120b",  # Change this to any model from OpenRouter
     messages=[{"role": "user", "content": "What is up?"}],
 )
 
-print(completion.choices[0].message.content)
+print(response.choices[0].message.content)
+```
+
+### Embeddings
+
+```python
+import os
+from litellm import embedding
+
+# Set environment variables
+os.environ["OPENROUTER_API_KEY"] = os.getenv("OPENROUTER_API_KEY")
+os.environ["OPENROUTER_API_BASE"] = os.getenv("OPENROUTER_API_BASE", "https://openrouter.ai/api/v1")
+
+response = embedding(
+    model="openrouter/openai/text-embedding-3-small",
+    input=["item one", "item two"],
+)
+
+print(response)
 ```
 
 ## Free Models
 
 There are many different free models available on OpenRouter. Check [https://openrouter.ai/models/?q=free](https://openrouter.ai/models/?q=free) for a complete list.
 
-Simply replace `"openai/gpt-oss-120b"` with the model ID of your choice from the OpenRouter models page.
+Simply replace `"openrouter/openai/gpt-oss-120b"` with the model ID of your choice from the OpenRouter models page. Use the `openrouter/` prefix for all OpenRouter models (e.g., `openrouter/openai/gpt-3.5-turbo`).
 
 ## Paid Models
 
