@@ -1,6 +1,6 @@
 # LLM Starter
 
-Instructions to get students up and running with OpenRouter in the Data Science Clinic.
+This guide will help you get up and running with LLM models in the Data Science Clinic, enabling you to perform chat completions and generate embeddings. We use OpenRouter to access a wide variety of models from different providers.
 
 ## Overview
 
